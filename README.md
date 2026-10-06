@@ -135,16 +135,16 @@ To pin **digiArch!ve** to your GNOME application grid and menu bar:
 
 **digiArch!ve** stores application settings in `~/.config/digital_archive/config.json`. Default directory anchors automatically resolve dynamically relative to your user home directory (`Path.home()`):
 
-| Setting Key        | Default Resolved Path                        | Purpose                                                  |
-|--------------------|----------------------------------------------|----------------------------------------------------------|
-| `db_path`          | `~/DigitalArchive_Vault/.archive/catalog.db` | Active SQLite Master Catalog Index [24, 48]              |
-| `master_repo_root` | `~/DigitalArchive_Vault`                     | Physical Vault root for canonical media storage [46, 51] |
-| `bin_root`         | `~/DigitalArchive_Vault/_BIN`                | Quarantine folder for deleted hygiene files [46, 49]     |
-| `staging_root`     | `~/DigitalArchive_Vault/MEDIA_STAGING`       | Temporary staging area for active sync sessions [46, 49] |
-| `output_dir`       | `~/DigitalArchive_Vault/.archive/reports`    | Default destination for schema & audit reports [50]      |
+| Setting Key        | Default Resolved Path                        | Purpose                                         |
+|--------------------|----------------------------------------------|-------------------------------------------------|
+| `db_path`          | `~/DigitalArchive_Vault/.archive/catalog.db` | Active SQLite Master Catalog Index              |
+| `master_repo_root` | `~/DigitalArchive_Vault`                     | Physical Vault root for canonical media storage |
+| `bin_root`         | `~/DigitalArchive_Vault/_BIN`                | Quarantine folder for deleted hygiene files     |
+| `staging_root`     | `~/DigitalArchive_Vault/MEDIA_STAGING`       | Temporary staging area for active sync sessions |
+| `output_dir`       | `~/DigitalArchive_Vault/.archive/reports`    | Default destination for schema & audit reports  |
 
 ---
 
 ## 📜 License & Compliance
 
-This repository is maintained for digital archiving, media cataloging, and personal data preservation. Audit utilities (`schema_extractor.py` and `catalog_integrity_audit.py`) operate strictly in **PII-Safe mode**, exporting metadata schemas, controlled vocabulary enums, and row counts without outputting user file paths, filenames, or content hashes [26, 35, 95].
+This repository is maintained for digital archiving, media cataloging, and personal data preservation. Audit utilities (`schema_extractor.py` and `catalog_integrity_audit.py`) operate strictly in **PII-Safe mode**, exporting metadata schemas, controlled vocabulary enums, and row counts without outputting user file paths, filenames, or content hashes.
