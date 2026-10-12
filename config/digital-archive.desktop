@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=digiArchive
+GenericName=Digital Archive & Metadata Manager
+Comment=Secure, PII-safe digital archive, deduplication, and metadata manager
+Exec=/usr/local/bin/digiArchive
+Icon=digiArchive
+Categories=Utility;Archiving;FileManager;
+Terminal=false
+StartupWMClass=digiArchive
+StartupNotify=true

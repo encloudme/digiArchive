@@ -1,0 +1,13 @@
+{
+    "db_path": "~/digiArchive_Vault/.archive/test.db",
+    "bin_root": "~/digiArchive_Vault/_BIN",
+    "master_repo_root": "~/digiArchive_Vault",
+    "master_repo_locked": true,
+    "tool_settings": {
+        "output_dir": "~/digiArchive_Vault",
+        "schema_path": "~/Project-digiArchive/database/schema.sql",
+        "auto_pass_db": true,
+        "extra_args": ""
+    },
+    "vault_name": "digiArchive_Vault"
+}

@@ -1,0 +1,21 @@
+# digiArchive v5.0 — Application & Test Suite Dependencies
+
+# Core GUI Framework
+PyQt6>=6.6.0
+
+# Automated Regression Test Harness
+pytest>=8.0.0
+
+# Hardware Probing & Disk Utilities
+psutil>=5.9.0
+
+# Report Generation & Webhook Sync
+openpyxl>=3.1.0
+requests>=2.31.0
+
+pyqt6-sip>=13.13.0
+
+# QR generation
+pyotp>=2.9.0
+qrcode>=7.4.2
+django-qrcode

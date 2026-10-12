@@ -1,5 +1,27 @@
-github.com_encloudme_digiArchive.txt
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-.idea
-.venv
-venv
+# Standalone Binaries (Distributed via GitHub Releases)
+releases/*.bin
+releases/*.exe
+releases/*.tar.gz
+releases/*.zip
+!releases/.gitkeep
+
+# Virtual Environments & IDE
+venv/
+.venv/
+.idea/
+.vscode/
+
+# Local build, test and sync scripts
+github.com_encloudme_digiArchive.txt
+documents/DEV_NOTES.md
+*.log
+*.tmp
+dist/
+build/
+sync/
+logs/
