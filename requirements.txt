@@ -1,4 +1,4 @@
-# digiArchive v5.0 — Application & Test Suite Dependencies
+# digiArchive v5.0.0 — Application & Test Suite Dependencies
 
 # Core GUI Framework
 PyQt6>=6.6.0

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# digiArchive v5.0 - Automated Linux Uninstallation Script
+# digiArchive v5.0.0 - Automated Linux Uninstallation Script
 # ==============================================================================
 set -e
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# digiArchive v5.0 - Automated Linux Installation Script
+# digiArchive v5.0.0 - Automated Linux Installation Script
 # ==============================================================================
 set -e
 

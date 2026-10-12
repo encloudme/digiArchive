@@ -190,7 +190,7 @@ Sensitive catalog maintenance (such as rolling back the SQLite catalog from a ho
 ## 📚 Documentation & Reference
 
 * 📖 **[Detailed User Guide](documents/USER_GUIDE.md)**: Full end-to-end operational handbook covering all tabs and workflows.
-* 📋 **[Release Notes](RELEASE_NOTES.md)**: Feature breakdown, changelog, and migration notes for v5.0.0.
+* 📋 **[Release Notes](RELEASE_NOTES_v5.0.0.md)**: Feature breakdown, changelog, and migration notes for v5.0.0.
 * 🗒️ **[Change Log](CHANGELOG.md)**: Detailed change log.
 * 📜 **[Software License](LICENSE)**: Open-source MIT License terms.
 

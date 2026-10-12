@@ -1,4 +1,4 @@
-# 🏛️ digiArchive v5.0 — Detailed User Guide
+# 🏛️ digiArchive v5.0.0 — Detailed User Guide
 
 Welcome to the **digiArchive** user guide. This document provides step-by-step instructions for installing, configuring, operating, and maintaining your digital archive and metadata catalog.
 
@@ -223,4 +223,4 @@ Ensure that custom maintenance scripts execute multi-statement SQL via `conn.exe
 
 ---
 
-*digiArchive v5.0 — Preserving Digital Heritage with Cryptographic Fixity*
+*digiArchive v5.0.0 — Preserving Digital Heritage with Cryptographic Fixity*
