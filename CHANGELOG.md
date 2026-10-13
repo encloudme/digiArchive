@@ -2,7 +2,7 @@
 
 All notable changes to the digiArchive project are documented in this file.
 
-## [5.0.0 (stable)] - 2026-10-12
+## [v5.0.0 (stable)] - 2026-10-12
 
 ### Added
 - Decoupled Database Mode: Support running catalog.db decoupled outside vault root.

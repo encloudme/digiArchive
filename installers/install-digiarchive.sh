@@ -65,31 +65,56 @@ detect_package_manager() {
 
 PKG_MGR=$(detect_package_manager)
 
-# Helper function to print a tailored install hint
+# Helper function to print a tailored install hint and optionally execute it
 show_install_hint() {
     local tool_name="$1"
     local deb_pkg="$2"
     local fed_pkg="$3"
     local arch_pkg="$4"
+    local install_cmd=""
 
-    echo -e "  💡 ${BOLD}Run this command to install ${tool_name}:${NC}"
+    # 1. Resolve the exact command based on the detected package manager
     case "$PKG_MGR" in
         apt)
-            echo -e "     ${BOLD}sudo apt update && sudo apt install ${deb_pkg}${NC}"
+            install_cmd="sudo apt update && sudo apt install -y ${deb_pkg}"
             ;;
         dnf)
-            echo -e "     ${BOLD}sudo dnf install ${fed_pkg}${NC}"
+            install_cmd="sudo dnf install -y ${fed_pkg}"
             ;;
         pacman)
-            echo -e "     ${BOLD}sudo pacman -S ${arch_pkg}${NC}"
+            install_cmd="sudo pacman -S --noconfirm ${arch_pkg}"
             ;;
         *)
-            echo -e "     - Debian/Ubuntu:  sudo apt install ${deb_pkg}"
-            echo -e "     - Fedora/RHEL:    sudo dnf install ${fed_pkg}"
-            echo -e "     - Arch Linux:     sudo pacman -S ${arch_pkg}"
+            install_cmd=""
             ;;
     esac
+
+    # 2. Display the installation advice
+    echo -e "  💡 ${BOLD}Recommended command to install ${tool_name}:${NC}"
+    if [[ -n "$install_cmd" ]]; then
+        echo -e "     ${BOLD}${install_cmd}${NC}"
+    else
+        echo -e "     - Debian/Ubuntu:  sudo apt install ${deb_pkg}"
+        echo -e "     - Fedora/RHEL:    sudo dnf install ${fed_pkg}"
+        echo -e "     - Arch Linux:     sudo pacman -S ${arch_pkg}"
+    fi
     echo ""
+
+    # 3. Prompt and execute if a package manager was recognized and shell is interactive
+    if [[ -n "$install_cmd" ]] && [ -t 0 ]; then
+        read -r -p "  Would you like to run this command now? [y/N]: " confirm
+        if [[ "$confirm" =~ ^[Yy](es)?$ ]]; then
+            echo -e "  🚀 Running: ${BOLD}${install_cmd}${NC}\n"
+            eval "$install_cmd"
+
+            # Verify if the installation succeeded
+            if command -v "$tool_name" &> /dev/null; then
+                echo -e "  ✔ ${tool_name} installed successfully.\n"
+            fi
+        else
+            echo -e "  Skipped installation.\n"
+        fi
+    fi
 }
 
 DESKTOP_UPDATED=false
@@ -175,33 +200,34 @@ if ! command -v sqlite3 &> /dev/null; then
     show_install_hint "sqlite3" "sqlite3" "sqlite" "sqlite"
 fi
 
-# 4. Check for PyQt6 & Python Runtime (Source execution & Dev tools)
-echo -e "\n${BLUE}🔍 Verifying Python runtime and GUI libraries (PyQt6)...${NC}"
-if command -v python3 &> /dev/null; then
-    if ! python3 -c "import PyQt6" &> /dev/null; then
-        echo -e " ⚠ ${YELLOW}[Notice] PyQt6 is not installed in the system Python environment.${NC}"
-        echo -e "    ${CYAN}Note:${NC} The standalone binary bundles PyQt6, but running source tools, CLI utilities, or tests requires it."
-
-        REQ_FILE=""
-        if [ -f "$REPO_ROOT/requirements.txt" ]; then
-            REQ_FILE="$REPO_ROOT/requirements.txt"
-        elif [ -f "$SCRIPT_DIR/requirements.txt" ]; then
-            REQ_FILE="$SCRIPT_DIR/requirements.txt"
-        fi
-
-        if [ -n "$REQ_FILE" ]; then
-            read -r -p "$(echo -e "${BLUE} ❔ Would you like to install required packages from requirements.txt now? (y/N): ${NC}")" req_choice
-            if [[ "$req_choice" =~ ^[Yy]$ ]]; then
-                echo -e "📦 Installing packages from $REQ_FILE..."
-                python3 -m pip install -r "$REQ_FILE" || pip3 install -r "$REQ_FILE" || true
-            fi
-        else
-            echo -e "  💡 To install PyQt6 manually: ${BOLD}pip install PyQt6${NC}\n"
-        fi
-    else
-        echo -e " ✅ ${GREEN}GUI Framework:${NC} PyQt6 detected in Python environment."
-    fi
-fi
+# Not required for standalone executions.
+## 4. Check for PyQt6 & Python Runtime (Source execution & Dev tools)
+#echo -e "\n${BLUE}🔍 Verifying Python runtime and GUI libraries (PyQt6)...${NC}"
+#if command -v python3 &> /dev/null; then
+#    if ! python3 -c "import PyQt6" &> /dev/null; then
+#        echo -e " ⚠ ${YELLOW}[Notice] PyQt6 is not installed in the system Python environment.${NC}"
+#        echo -e "    ${CYAN}Note:${NC} The standalone binary bundles PyQt6, but running source tools, CLI utilities, or tests requires it."
+#
+#        REQ_FILE=""
+#        if [ -f "$REPO_ROOT/requirements.txt" ]; then
+#            REQ_FILE="$REPO_ROOT/requirements.txt"
+#        elif [ -f "$SCRIPT_DIR/requirements.txt" ]; then
+#            REQ_FILE="$SCRIPT_DIR/requirements.txt"
+#        fi
+#
+#        if [ -n "$REQ_FILE" ]; then
+#            read -r -p "$(echo -e "${BLUE} ❔ Would you like to install required packages from requirements.txt now? (y/N): ${NC}")" req_choice
+#            if [[ "$req_choice" =~ ^[Yy]$ ]]; then
+#                echo -e "📦 Installing packages from $REQ_FILE..."
+#                python3 -m pip install -r "$REQ_FILE" || pip3 install -r "$REQ_FILE" || true
+#            fi
+#        else
+#            echo -e "  💡 To install PyQt6 manually: ${BOLD}pip install PyQt6${NC}\n"
+#        fi
+#    else
+#        echo -e " ✅ ${GREEN}GUI Framework:${NC} PyQt6 detected in Python environment."
+#    fi
+#fi
 
 # =====================================================================================================================
 # 3. Install binary executable (Local resolution with Multi-Format Release Fallback)
@@ -333,7 +359,7 @@ if [ -z "$BIN_FILE" ]; then
         echo ""
         echo -e "  💡 ${BOLD}Manual Download Instructions:${NC}"
         echo -e "     1. Download '${BIN_NAME}', '${BIN_STEM}.tar.gz', or '${BIN_STEM}.zip' from:"
-        echo -e "        ${BLUE}https://github.com/<OWNER>/<REPO>/releases/tag/${APP_VERSION}${NC}"
+        echo -e "        ${BLUE}https://github.com/encloudme/digiArchive/releases/tag/${APP_VERSION}${NC}"
         echo -e "     2. Place or extract the binary into '${BIN_PATH}/':"
         echo -e "        ${BOLD}cp \"$DEFAULT_DOWNLOAD_FILE\" \"$TARGET_RELEASE_FILE\" && chmod +x \"$TARGET_RELEASE_FILE\"${NC}"
         echo ""

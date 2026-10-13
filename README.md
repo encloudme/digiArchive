@@ -100,7 +100,9 @@ Project-digiArchive/                      # REPO_ROOT
 ├── config/                               # Optional: Receives mirrored .desktop copy
 │   └── digital-archive.desktop
 └── requirements.txt                      # Optional: Primary requirements location
+
 ```
+_Note: requirements installation is applicable only for raw src code execution, ignore for BINARY installations_
 
 ### Essential files & permission check list
 | Path                                  | Purpose                                             | Permissions    |

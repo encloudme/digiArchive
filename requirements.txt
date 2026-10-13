@@ -1,4 +1,5 @@
 # digiArchive v5.0.0 — Application & Test Suite Dependencies
+# required when raw source code is used, for standalone binary files follow instructions during installation
 
 # Core GUI Framework
 PyQt6>=6.6.0
