@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# digiArchive v5.0.0 - Automated Linux Installation Script
+# digiArchive v5.0.1 - Automated Linux Installation Script
 # ==============================================================================
 set -e
 
@@ -16,7 +16,7 @@ CYAN='\033[0;96m'
 # App installation default paths
 APP_NAME="digiArchive"
 ICON_NAME="${APP_NAME}.png"
-APP_VERSION="v5.0.0"
+APP_VERSION="v5.0.1"
 BIN_NAME="${APP_NAME}-linux-x86_64.bin"
 TARGET_BIN="/usr/local/bin/$APP_NAME"
 
@@ -105,12 +105,15 @@ show_install_hint() {
         read -r -p "  Would you like to run this command now? [y/N]: " confirm
         if [[ "$confirm" =~ ^[Yy](es)?$ ]]; then
             echo -e "  🚀 Running: ${BOLD}${install_cmd}${NC}\n"
-            eval "$install_cmd"
-
-            # Verify if the installation succeeded
-            if command -v "$tool_name" &> /dev/null; then
-                echo -e "  ✔ ${tool_name} installed successfully.\n"
+            if eval "$install_cmd"; then
+              echo -e " ✔ ${CYAN}${tool_name} installed successfully.\\n"
+            else
+              echo -e " ❌ Failed to install ${tool_name}.\\n"
             fi
+#            # Verify if the installation succeeded
+#            if command -v "$tool_name" &> /dev/null; then
+#                echo -e "  ✔ ${tool_name} installed successfully.\n"
+#            fi
         else
             echo -e "  Skipped installation.\n"
         fi
@@ -192,21 +195,38 @@ fi
 if ! command -v adb &> /dev/null; then
     echo -e " ⚠ ${YELLOW}[Warning] 'adb' was not detected on your system.${NC}"
     show_install_hint "adb" "adb android-tools-adb" "android-tools" "android-tools"
+else
+    echo -e " ✅ ${GREEN}ADB${NC} connectivity protocols detected."
 fi
 
 # 3. Check SQLite3
 if ! command -v sqlite3 &> /dev/null; then
     echo -e " ⚠ ${YELLOW}[Warning] 'sqlite3' CLI utility was not detected.${NC}"
     show_install_hint "sqlite3" "sqlite3" "sqlite" "sqlite"
+else
+    echo -e " ✅ ${GREEN}SQLite3${NC} CLI utility detected."
 fi
 
+# 4. Check GStreamer 1.0 Runtime (Required for Video Splash)
+if ! ldconfig -p 2>/dev/null | grep -q "libgstreamer-1.0" && ! command -v gst-launch-1.0 &> /dev/null; then
+    echo -e " ⚠ ${YELLOW}[Warning] GStreamer 1.0 multimedia libraries were not detected.${NC}"
+    echo -e "    Video playback on the Welcome splash screen requires GStreamer runtime plugins."
+    show_install_hint "gstreamer1.0" \
+        "libgstreamer1.0-0 libgstreamer-plugins-base1.0-0 gstreamer1.0-plugins-good gstreamer1.0-libav gstreamer1.0-gl" \
+        "gstreamer1 gstreamer1-plugins-base gstreamer1-plugins-good" \
+        "gstreamer gst-plugins-base gst-plugins-good"
+else
+    echo -e " ✅ ${GREEN}Multimedia Backend:${NC} GStreamer 1.0 detected."
+fi
+
+
 # Not required for standalone executions.
-## 4. Check for PyQt6 & Python Runtime (Source execution & Dev tools)
-#echo -e "\n${BLUE}🔍 Verifying Python runtime and GUI libraries (PyQt6)...${NC}"
+## 4. Check for PySide6 & Python Runtime (Source execution & Dev tools)
+#echo -e "\n${BLUE}🔍 Verifying Python runtime and GUI libraries (PySide6)...${NC}"
 #if command -v python3 &> /dev/null; then
-#    if ! python3 -c "import PyQt6" &> /dev/null; then
-#        echo -e " ⚠ ${YELLOW}[Notice] PyQt6 is not installed in the system Python environment.${NC}"
-#        echo -e "    ${CYAN}Note:${NC} The standalone binary bundles PyQt6, but running source tools, CLI utilities, or tests requires it."
+#    if ! python3 -c "import PySide6" &> /dev/null; then
+#        echo -e " ⚠ ${YELLOW}[Notice] PySide6 is not installed in the system Python environment.${NC}"
+#        echo -e "    ${CYAN}Note:${NC} The standalone binary bundles PySide6, but running source tools, CLI utilities, or tests requires it."
 #
 #        REQ_FILE=""
 #        if [ -f "$REPO_ROOT/requirements.txt" ]; then
@@ -222,10 +242,10 @@ fi
 #                python3 -m pip install -r "$REQ_FILE" || pip3 install -r "$REQ_FILE" || true
 #            fi
 #        else
-#            echo -e "  💡 To install PyQt6 manually: ${BOLD}pip install PyQt6${NC}\n"
+#            echo -e "  💡 To install PySide6 manually: ${BOLD}pip install PySide6${NC}\n"
 #        fi
 #    else
-#        echo -e " ✅ ${GREEN}GUI Framework:${NC} PyQt6 detected in Python environment."
+#        echo -e " ✅ ${GREEN}GUI Framework:${NC} PySide6 detected in Python environment."
 #    fi
 #fi
 

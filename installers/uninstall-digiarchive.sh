@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# digiArchive v5.0.0 - Automated Linux Uninstallation Script
+# digiArchive v5.0.1 - Automated Linux Uninstallation Script
 # ==============================================================================
 set -e
 
@@ -15,7 +15,7 @@ YELLOW='\033[1;93m'
 # Application installation metadata
 APP_NAME="digiArchive"
 ICON_NAME="${APP_NAME}.png"
-APP_VERSION="v5.0.0"
+APP_VERSION="v5.0.1"
 TARGET_BIN="/usr/local/bin/$APP_NAME"
 
 # Updated to target system-wide desktop entry location
