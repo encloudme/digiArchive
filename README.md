@@ -14,7 +14,7 @@
 
 
 <!-- Badges -->
-[![Release](https://img.shields.io/badge/Release-v5.0.1-blue.svg)](https://github.com/kr-hari-ps/Project-DigitalArchive/releases)
+[![Release](https://img.shields.io/badge/Release-v5.0.1-blue.svg)](https://github.com/encloudme/digiArchive/releases)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20x86__64-orange.svg)](#-system-requirements)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![GUI](https://img.shields.io/badge/GUI-PySide6%20%7C%20Qt6-green.svg)](https://www.qt.io/)
