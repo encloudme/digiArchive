@@ -33,7 +33,7 @@ This milestone delivers complete architectural decoupling of physical storage oc
 
 ### 3. Comprehensive Settings & Operations Overhaul
 Reorganized the Settings panel into six structured, dedicated sub-tabs:
-* **Sub-Tab 0 (Software License & Open Source Terms):** Displays clean MIT license terms, copyright notice, developer contact, and issue tracker via `license.py` with native link launching.
+* **Sub-Tab 0 (Software License & Open Source Terms):** Displays clean MIT license terms, copyright notice, developer contact, and issue tracker via `app_license.py` with native link launching.
 * **Sub-Tab 1 (MASTER Vault & Repository Configuration):** Unified configuration for Vault Name, Root Path, and Catalog DB with atomic lock enforcement (`🔒 Confirm & Lock All`).
 * **Sub-Tab 2 (Database Operations & Maintenance Scripts):** Dedicated interface for running schema extraction, integrity audits, and custom arguments.
 * **Sub-Tab 3 (Process Execution & Diagnostics Log):** Real-time streaming log capturing stdout and stderr from background operations.
