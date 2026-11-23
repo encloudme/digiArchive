@@ -1,4 +1,4 @@
-### 🏛️ digiArchive v5.0.1 — Detailed User Guide
+### 🏛️ digiArchive v5.0.5 — Detailed User Guide
 Welcome to the **digiArchive** user guide. This document provides step-by-step instructions for installing, configuring, operating, and maintaining your digital archive and metadata catalog.
 
 ---
@@ -136,17 +136,16 @@ sudo timedatectl set-ntp on
 
 ---
 
-#### 5. User Interface Navigation
-digiArchive features a modern dashboard with a left-hand navigation rail providing quick access to 6 specialized views:
+###### 5. User Interface Navigation
+digiArchive features a collapsible left-side navigation rail (expand 240px ↔ compact 68px via the **◀ / ▶** button):
 
-| View Icon & Name         | Purpose                                                                                   |
-|:-------------------------|:------------------------------------------------------------------------------------------|
-| **🗂️ Welcome Dashboard** | High-level system health, master repository metrics, and quick action shortcuts.          |
-| **📱 Devices & Sources** | Registered device profiles, 2x2 interactive device category cards, and hardware scanning. |
-| **🧹 Device Hygiene**    | Media cleanup tools, empty folder sweeps, thumbnail pruning, and quarantine management.   |
-| **⚡ Ingestion Engine**  | Non-destructive pull ingestion from attached devices into media staging.                  |
-| **⏪ Restore Points**    | Point-in-time recovery, GFS snapshot inspection, and catalog restoration.                 |
-| **⚙️ Settings**          | Master repository paths, catalog DB settings, CLI maintenance, license terms, and logs.   |
+*   **📊 Welcome & Storage Overview (Index 0):** Master vault status, storage capacity gauge, and quick-action navigation cards.
+*   **📱 Devices & Hardware Discovery (Index 1):** Real-time category profile cards (PC, Tablet, Phone, USB) and physical hardware property inspector.
+*   **⚡ Ingestion & Delta Sync (Index 2):** Two-pass non-destructive ingestion engine, Donut throughput visualizer, and **Export Excel Report** session exporter.
+*   **🧹 Device Hygiene & Quarantine (Index 3):** Cache cleanup, temporary file removal, and survivor-guarded duplicate segregation into `_BIN/`.
+*   **⏪ Restore Points & Rollback (Index 4):** Point-in-time recovery of quarantined assets and 2FA-shielded master database rollback.
+*   **🏛️ File Vault Explorer (Index 5):** Physical tree view of active folders and files in `MASTER`, complete with file size, capture date, and SHA-256 fixity hashes.
+*   **⚙️ Settings & Database Operations (Index 6):** Vault path configuration, license terms, automated GFS crontab scheduling, and diagnostic logs.
 
 ---
 
@@ -186,6 +185,10 @@ digiArchive features a modern dashboard with a left-hand navigation rail providi
     * Click **"🔄 Restore Selected Snapshot"**.
     * Enter your 6-digit mobile 2FA TOTP code to confirm the database rollback.
 
+##### 6.5 Browsing the Master Vault &amp; Exporting Ingestion Reports
+*   **Master Vault Browsing:** Open **🏛️ File Vault Explorer**. Use the directory tree on the left to navigate folders. Select any file to inspect its canonical vault path, file size, media classification, and verified SHA-256 hash.
+*   **Session Audit Export:** After completing an Ingestion &amp; Sync sweep, click the **📊 Export Excel Report** button on the completion ribbon. digiArchive generates a multi-sheet `.xlsx` workbook inside `
+
 ---
 
 #### 7. CLI Maintenance & Dev QR Utilities
@@ -197,7 +200,7 @@ Enable automated background hot-backups via **Settings** → **5.4 Automated Cat
 0 2 * * * /usr/local/bin/digiArchive --backup-cron
 ```
 
-##### 7.2 Generating Dev 2FA QR Codes [Developer option]
+##### 7.2 Generating Dev 2FA QR Codes \[Developer option]
 To generate a scannable 2FA enrollment QR image for an existing catalog database without invalidating stored keys:
 ```bash
 python3 scripts/generate_dev_qr.py --db-path ~/digiArchive_Vault/.archive/catalog.db -o dev_qr.png
@@ -219,4 +222,4 @@ Ensure that custom maintenance scripts execute multi-statement SQL via `conn.exe
 
 ---
 
-*digiArchive v5.0.1 — Preserving Digital Heritage with Cryptographic Fixity*
+*digiArchive v5.0.5 — Preserving Digital Heritage with Cryptographic Fixity*

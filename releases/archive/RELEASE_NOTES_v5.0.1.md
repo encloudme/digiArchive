@@ -17,7 +17,7 @@ This release introduces the **FR-18 Vault Security Architecture** (storing admin
 #### 🚀 Key Improvements & Highlights in v5.0.1
 
 ##### 1. FR-18 Vault Security Architecture (Step 1)
-* **Embedded Security Table:** Integrated `vault_security` into SQLite schema (`database/schema.sql` v3.1) housing `db_uuid` (immutable UUID v4), `admin_hash`, `totp_secret`, and `vault_name`.
+* **Embedded Security Table:** Integrated `vault_security` into SQLite schema (`../../database/schema.sql` v3.1) housing `db_uuid` (immutable UUID v4), `admin_hash`, `totp_secret`, and `vault_name`.
 * **Schema Safeguard Triggers:** Enforced SQLite triggers preventing modification or deletion of the immutable `db_uuid` row once inserted.
 * **Idempotent Auto-Migration Hook:** Wired startup auto-migration into `digiArchive.py` that automatically ports legacy credentials (`admin_hash`, `totp_secret`) from `config.json` into `catalog.db` (`vault_security` table) and prunes sensitive keys from disk config files.
 * **Dynamic Setup & Onboarding:** Enhanced `InitialSetupDialog` in `welcome_ui.py` supporting live Vault Name and DB Name customization with real-time 2FA QR code re-rendering and authenticator key segregation.
@@ -26,7 +26,7 @@ This release introduces the **FR-18 Vault Security Architecture** (storing admin
 * **Dev 2FA QR Generator (`scripts/generate_dev_qr.py`):** Standalone CLI utility generating scannable 2FA QR PNG images directly from existing `catalog.db` TOTP secrets via `generate_qr_from_existing_secret()`, preventing token invalidation or authenticator desynchronization.
 
 ##### 3. Startup Video Splash Pipeline
-* **Brand Launch Experience:** Seamlessly plays `assets/welcome/digiArchive_launch.mp4` via PySide6 `QMediaPlayer`, `QAudioOutput`, and `QVideoWidget` across all application launches.
+* **Brand Launch Experience:** Seamlessly plays `../../assets/welcome/digiArchive_launch.mp4` via PySide6 `QMediaPlayer`, `QAudioOutput`, and `QVideoWidget` across all application launches.
 * **Dual-Mode Architecture:** Supports both standalone modal dialog (`LogoSplashDialog`) and embedded stack widget (`LogoSplashWidget`) layouts.
 * **Instant Teardown & Audio Fixity:** Stops media playback and mutes audio output immediately on user skip (mouse click/keypress) or video completion, resolving background audio leaks.
 * **Clean Linux Desktop Integration:** Bound `Qt.WindowType.SplashScreen` and injected `CUDA_VISIBLE_DEVICES=""` prior to Qt imports to suppress secondary taskbar icons and failing CUDA probe warnings.
@@ -55,9 +55,9 @@ This release introduces the **FR-18 Vault Security Architecture** (storing admin
 |:--------------------------------------|:------------------|:------------------------------------------------------------|
 | `digiArchive-linux-x86_64.bin`        | Standalone Binary | Compiled standalone Linux executable (zero-dependency)      |
 | `digiArchive-linux-x86_64.bin.sha256` | Checksum          | SHA-256 verification hash                                   |
-| `installers/install-digiarchive.sh`   | Shell Script      | Automated system installer with GStreamer pre-flight checks |
-| `installers/uninstall-digiarchive.sh` | Shell Script      | System uninstallation script                                |
-| `CHANGELOG.md`                        | Documentation     | Complete version history including v5.0.1 changes           |
+| `../../installers/install-digiarchive.sh`   | Shell Script      | Automated system installer with GStreamer pre-flight checks |
+| `../../installers/uninstall-digiarchive.sh` | Shell Script      | System uninstallation script                                |
+| `../../CHANGELOG.md`                        | Documentation     | Complete version history including v5.0.1 changes           |
 | `RELEASE_NOTES_v5.0.1.md`             | Documentation     | Official v5.0.1 release notes                               |
 
 ---

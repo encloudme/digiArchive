@@ -1,7 +1,57 @@
-### Changelog
+### Changelog 
 All notable changes to the digiArchive project are documented in this file.
 
-#### [5.0.1] - 2026-10-25
+#### \[5.0.5] - 2026-11-22
+##### Added
+* **Operational Reporting Exports (Milestone v5.0.5)**: Added multi-tab Excel (`.xlsx`) and CSV session exports to the Ingest & Sync viewport (`src/reporting.py`, `src/sync_ui.py`) with automatic routing to `.archive/sync_reports`.
+* **File Vault Explorer (FR-32)**: Added dedicated File Vault Explorer tab (`src/vault_explorer_ui.py`) with `QFileSystemModel` to inspect physical directory hierarchies and file attributes in the `MASTER` repository.
+* **Collapsible Navigation Rail**: Implemented persistent left-side navigation rail supporting smooth collapse (expanded 240px ↔ compact 68px).
+
+##### Changed
+* **UI & Theme Architecture**: Refactored `styles.py` to decoupled `app_styles.py` engine with dynamic theme registration.
+* **Light & Dark Theme Contrast**: Corrected low-contrast text in Welcome Dashboard storage gauge, action card descriptions, and sidebar brand title in Light theme (Zinc Alabaster).
+* **High-Contrast Dark Scrollbars**: Added slate grey handles with bright borders and active hover feedback for all dark desktop palettes.
+
+##### Fixed
+* **Restore Points UI Responsiveness**: Eliminated UI freeze in `restore_ui.py` by removing premature thread destruction, eliminating nested event loop re-entrancy, and setting column resize mode to `Interactive`.
+* **Thread-Aware Database Teardown**: Hardened SQLite connection pool in `src/db.py` and `src/settings_ui.py` to cleanly unmount connections during vault switching.
+* **Desktop Notification Dispatch**: Restored notification signals in `src/t_db_backup.py` and eliminated unused security imports.
+
+#### \[5.0.4] - 2026-11-16
+##### Added
+* **Asynchronous Ingestion Worker (FR-35)**: Moved staging and catalog synchronization off the main GUI thread to `SyncExecutionWorker(QObject)` to eliminate application freezes during ingestion.
+* **High-Throughput Streaming Buffer (FR-39)**: Increased file copy chunk buffer from 64 KB to 4 MB (4,194,304 bytes) to reduce system call overhead on large media transfers.
+* **Auto-Healing Asset Map (FR-40)**: Added automated recovery query populating missing `asset_map` linkages for re-scanned `KNOWN` assets.
+
+##### Changed
+* **64-Bit Qt Signal Safety (FR-36)**: Switched PySide6 byte count signals to 64-bit integer types (`qint64`) to prevent overflow crashes on media transfers larger than 2.14 GB.
+* **Database Busy Timeout (FR-37)**: Configured `PRAGMA busy_timeout = 60000;` on all database connections to prevent `SQLITE_BUSY` concurrency deadlocks with background GFS backup cron jobs.
+
+##### Fixed
+* **Directory Scope Viewport Reset (FR-38)**: Connected source path changes to automatically clear stale scan rows and reset KPI counters.
+* **Host Container Lifetime & D-Bus Stabilization**: Bound `StartupInitWorker` parentage to `QApplication` to eliminate `QThread: Destroyed while thread is still running` crash.
+
+#### \[5.0.3] - 2026-11-11
+##### Added
+* **Duplicate Segregation & Survivor Protection**: Implemented automated segregation between vault-paired duplicates and inter-device duplicate candidates in `src/cleaner.py` and `src/cleaner_ui.py`.
+* **Mandatory Survivor Guards**: Enforced survivor retention rules preventing accidental deletion of all copies of duplicate files during hygiene sweeps.
+
+#### \[5.0.2] - 2026-11-05
+##### Added
+* **Schema Invariant Contract**: Established the unified catalog schema contract (`catalog_schema_v5.0.2.sql`).
+
+##### Fixed
+* **Core Stability Baseline (`ae11012`)**:
+  * `src/welcome_ui.py`: Pre-instantiated `db_path_label` and `lbl_tree` before status refresh; standardized dialog titles via `get_window_title()`.
+  * `src/sync_ui.py`: Adjusted KPI card spacing and aligned message titles.
+  * `src/restore_ui.py`: Enabled background threading to prevent garbage collection `SIGABRT` crashes.
+  * `src/digiArchive.py`: Corrected Qt `mousePressEvent` signature and deduplicated `WelcomeTab` instantiation.
+  * `src/device_engine.py`: Resolved exception syntax errors and guarded host PC partition classification.
+  * `src/cleaner_ui.py`: Added missing `Path` import in `export_results`.
+  * `src/config.py`: Added configuration variables and centralized `get_window_title()`.
+
+
+#### \[5.0.1] - 2026-10-25
 ##### Added
 * **FR-18 Vault Security Schema Table (`vault_security`):** Integrated `vault_security` table into SQLite `schema.sql` (v3.1) storing `db_uuid` (immutable UUID v4), `admin_hash`, `totp_secret`, and `vault_name` directly within `catalog.db`.
 * **Immutable UUID Triggers:** Added SQLite triggers enforcing `db_uuid` immutability against modifications or deletions.
@@ -32,7 +82,7 @@ All notable changes to the digiArchive project are documented in this file.
 * **IDE Static Analysis & KPI Card Subclassing:** Subclassed `KPICard(QFrame)` with explicit `self.val_label` attribute to eliminate unresolved attribute warnings.
 * **Vault Unlock Confirmation Wording:** Corrected grammatical typo in settings dialog copy to confirm 2FA credentials remain unchanged when switching catalog databases.
 
-#### [5.0.0] - 2026-10-12
+#### \[5.0.0] - 2026-10-12
 ##### Added
 * **Decoupled Database Mode:** Support running `catalog.db` decoupled outside vault root with automated path mismatch detection and migration assistance.
 * **Modular Schema Loader Delegation:** Delegated catalog initialization directly to `src/t_load_schema.py`, eliminating raw embedded SQL DDL in UI code.
@@ -50,7 +100,7 @@ All notable changes to the digiArchive project are documented in this file.
 * **Silent Database Creation Failure:** Ensured return value checks on schema loader and redirected diagnostics to console log.
 * **Preserved Schema Loader Backup:** Maintained schema loader recovery fallback (`load_schema_bkup.py`).
 
-#### [5.0.0-rc.1] - 2026-10-06
+#### \[5.0.0-rc.1] - 2026-10-06
 ##### Added
 * **Single-File Nuitka Packaging Workflow:** Configured automated build workflow for standalone binaries via GitHub Actions.
 * **Dynamic 2FA QR Onboarding:** Integrated Base32 TOTP secret generation and QR modal.
@@ -66,7 +116,7 @@ All notable changes to the digiArchive project are documented in this file.
 * **Tilde Path Expansion:** Fixed literal tilde string resolution using `Path.expanduser()`.
 * **GUI Type Safety:** Cast `output_dir` explicitly to string when binding to UI line edits.
 
-#### [5.0.0-beta.1] - 2026-10-02
+#### \[5.0.0-beta.1] - 2026-10-02
 ##### Added
 * **Automated Pre-Commit Safety Checks:** Configured automated test suite execution prior to local git commits.
 * **Dual-Privacy Reporting Model:** Established forensic diagnostics (`LOCAL_FULL_DO_NOT_SHARE`) alongside sanitized summaries (`SAFE_SUMMARY_SHAREABLE`).
@@ -75,14 +125,14 @@ All notable changes to the digiArchive project are documented in this file.
 * **Complete Test Suite Verification:** Achieved 38/38 passing test suites across database and safety rules.
 * **Environment Isolation:** Updated `.gitignore` to isolate virtual environments and IDE settings.
 
-#### [4.6.0] - 2026-10-01
+#### \[4.6.0] - 2026-10-01
 ##### Added
 * **Application Rebranding:** Formal project rebranding to **digiArchive** with updated assets and desktop launchers.
 
 ##### Removed
 * **Legacy Artifact Cleanup:** Pruned obsolete prototype scripts and temporary test files.
 
-#### [0.2.0] - 2026-08-29
+#### \[0.2.0] - 2026-08-29
 ##### Added
 * **Modular Package Structure:** Refactored standalone scripts into reusable core subpackages.
 * **Authoritative Catalog Schema:** Formally established relational SQLite schema with foreign key enforcement and cascading deletes.
@@ -90,6 +140,6 @@ All notable changes to the digiArchive project are documented in this file.
 * **Non-Destructive Ingestion Engine:** Introduced delta evaluation separating physical occurrences from deduplicated logical master files.
 * **Desktop Application Baseline:** Added initial desktop UI and CLI entry points.
 
-#### [0.1.0] - 2026-08-24
+#### \[0.1.0] - 2026-08-24
 ##### Added
-* **Baseline Ingestion and Catalog Layout:** Initial commit establishing prototype scripts, database schema, media duplicate handling, canonical planning queries, and logging.
+* **Baseline Ingestion and Catalog Layout:** Initial commit establishing prototype scripts, database schema, media duplicate handling, canonical planning queries, and logging.]()

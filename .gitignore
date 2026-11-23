@@ -21,6 +21,8 @@ github.com_encloudme_digiArchive.txt
 documents/DEV_NOTES.md
 *.log
 *.tmp
+combined_*
+merged_*
 dist/
 build/
 sync/

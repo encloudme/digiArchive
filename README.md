@@ -7,14 +7,14 @@
   <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin: 20px 0;">
     <div> <img src="assets/icons/digiArchive.png" alt="App icon" width="80"> </div>
     <div style="text-align: left;">
-      <strong style="font-size: 22px;">digiArchive — Digital Archive & Metadata Manager (v5.0.1)</strong>
+      <strong style="font-size: 22px;">digiArchive — Digital Archive & Metadata Manager (v5.0.5)</strong>
     </div>
   </div>
   <br/>
 
 
 <!-- Badges -->
-[![Release](https://img.shields.io/badge/Release-v5.0.1-blue.svg)](https://github.com/encloudme/digiArchive/releases)
+[![Release](https://img.shields.io/badge/Release-v5.0.5-blue.svg)](https://github.com/encloudme/digiArchive/releases)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20x86__64-orange.svg)](#-system-requirements)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![GUI](https://img.shields.io/badge/GUI-PySide6%20%7C%20Qt6-green.svg)](https://www.qt.io/)
@@ -40,6 +40,10 @@
 
 All operations follow non-destructive, transaction-safe protocols: source media is never modified during ingestion or hygiene scans, and administrative operations are gated by two-factor authentication (2FA) backed by the embedded `vault_security` database schema.
 
+- **Operational Reporting Parity (v5.0.5):** Native multi-tab Excel (`.xlsx`) and CSV audit reports for ingestion sessions.
+- **File Vault Explorer (FR-32):** Real-time directory navigation and metadata inspection for MASTER repository assets.
+- **Asynchronous Ingestion Engine:** Multi-threaded execution (`qint64` typing, 4MB copy buffers, and 60-second SQLite busy timeouts) preventing desktop UI lockups.
+- **Collapsible Navigation Rail & Modern Themes:** 6 WCAG-compliant high-contrast Light and Dark desktop themes.
 ---
 
 #### 💻 System Requirements
@@ -187,7 +191,7 @@ Sensitive catalog maintenance (such as rolling back the SQLite catalog from a ho
 
 #### 📚 Documentation & Reference
 * 📖 **[Detailed User Guide](documents/USER_GUIDE.md)**: Full end-to-end operational handbook covering all tabs and workflows.
-* 📋 **[Release Notes](RELEASE_NOTES_v5.0.1.md)**: Feature breakdown, changelog, and migration notes for v5.0.1.
+* 📋 **[Release Notes](RELEASE_NOTES_v5.0.5.md)**: Feature breakdown, changelog, and migration notes for v5.0.5.
 * 🗒️ **[Change Log](CHANGELOG.md)**: Detailed version history.
 * 📜 **[Software License](LICENSE)**: Open-source MIT License terms.
 
