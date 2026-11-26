@@ -65,10 +65,10 @@ This release integrates native multi-sheet Excel (`.xlsx`) and CSV audit reporti
 | :--- | :--- | :--- |
 | `digiArchive-linux-x86_64.bin` | Standalone Executable | Compiled standalone Linux binary (Nuitka onefile) |
 | `digiArchive-linux-x86_64.bin.sha256` | Checksum File | SHA-256 fixity checksum for binary distribution |
-| `installers/install-digiarchive.sh` | Shell Script | Automated desktop installer with dependency checks |
-| `installers/uninstall-digiarchive.sh` | Shell Script | System uninstaller and desktop entry cleaner |
+| `../../installers/install-digiarchive.sh` | Shell Script | Automated desktop installer with dependency checks |
+| `../../installers/uninstall-digiarchive.sh` | Shell Script | System uninstaller and desktop entry cleaner |
 | `releases/digiArchive-build-release.sh` | Build Script | Standalone distribution build automation script |
-| `CHANGELOG.md` | Documentation | Chronological release log with v5.0.5 and v5.0.4 entries |
+| `../../CHANGELOG.md` | Documentation | Chronological release log with v5.0.5 and v5.0.4 entries |
 | `RELEASE_NOTES_v5.0.5.md` | Documentation | Official v5.0.5 release documentation |
 
 ---

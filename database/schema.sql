@@ -1,5 +1,5 @@
 -- ==============================================================================
--- 🗄️ digiArchive — Catalog Database Unified Master Schema (v5.0.5 / Production)
+-- 🗄️ digiArchive — Catalog Database Unified Master Schema (v5.1.0 / Production)
 -- ==============================================================================
 -- Single Source of Truth for Catalog Metadata, Physical Asset Provenance,
 -- Transactional Ingestion/Sync Auditing, Vault Security, and Extension Registry.

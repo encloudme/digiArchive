@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# digiArchive v5.0.5 - Automated Linux Installation Script (Re-wired)
+# digiArchive v5.1.0 - Automated Linux Installation Script (Re-wired)
 # ==============================================================================
 set -eo pipefail
 
@@ -16,7 +16,7 @@ CYAN='\033[0;96m'
 # App installation default paths
 APP_NAME="digiArchive"
 ICON_NAME="${APP_NAME}.png"
-APP_VERSION="v5.0.5"
+APP_VERSION="v5.1.0"
 BIN_NAME="${APP_NAME}-linux-x86_64.bin"
 
 # 1. New Subfolder Structure in /usr/local/bin/digiArchive/

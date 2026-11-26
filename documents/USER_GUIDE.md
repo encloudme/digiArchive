@@ -1,4 +1,4 @@
-### 🏛️ digiArchive v5.0.5 — Detailed User Guide
+### 🏛️ digiArchive v5.1.0 — Detailed User Guide
 Welcome to the **digiArchive** user guide. This document provides step-by-step instructions for installing, configuring, operating, and maintaining your digital archive and metadata catalog.
 
 ---
@@ -137,14 +137,18 @@ sudo timedatectl set-ntp on
 ---
 
 ###### 5. User Interface Navigation
-digiArchive features a collapsible left-side navigation rail (expand 240px ↔ compact 68px via the **◀ / ▶** button):
+digiArchive features a collapsible left-side navigation rail (expand 240px ↔ compact 68px via the **◀ / ☰ ** button):
 
 *   **📊 Welcome & Storage Overview (Index 0):** Master vault status, storage capacity gauge, and quick-action navigation cards.
 *   **📱 Devices & Hardware Discovery (Index 1):** Real-time category profile cards (PC, Tablet, Phone, USB) and physical hardware property inspector.
 *   **⚡ Ingestion & Delta Sync (Index 2):** Two-pass non-destructive ingestion engine, Donut throughput visualizer, and **Export Excel Report** session exporter.
 *   **🧹 Device Hygiene & Quarantine (Index 3):** Cache cleanup, temporary file removal, and survivor-guarded duplicate segregation into `_BIN/`.
 *   **⏪ Restore Points & Rollback (Index 4):** Point-in-time recovery of quarantined assets and 2FA-shielded master database rollback.
-*   **🏛️ File Vault Explorer (Index 5):** Physical tree view of active folders and files in `MASTER`, complete with file size, capture date, and SHA-256 fixity hashes.
+*   **🏛️ File Vault Explorer (Index 5):** Interactive preservation and governance console. Contains four specialized sub-tabs:
+    1. **🗂️ Vault Folder Governance:** Set folder status (`CANONICAL`), add subfolders, rename directories, inspect three-state health badges, and bind canonical contracts.
+    2. **📄 File Browser & Operations:** Browse files in a 6-column grid with extension badges (`Ext`), filter by dynamic categories, inspect file metadata, view thumbnails, and execute bulk moves.
+    3. **📜 Decision & Move History:** Audit historical move and rename events from `file_decision_history`, filter records, export reports (`.xlsx`/`.csv`), and execute 1-click transactional rollbacks.
+    4. **🧭 File Lineage:** Trace full multi-device lifecycle events by SHA-256 hash across six distinct stages, auto-detect clipboard hashes, and export executive audit reports.
 *   **⚙️ Settings & Database Operations (Index 6):** Vault path configuration, license terms, automated GFS crontab scheduling, and diagnostic logs.
 
 ---
@@ -185,9 +189,78 @@ digiArchive features a collapsible left-side navigation rail (expand 240px ↔ c
     * Click **"🔄 Restore Selected Snapshot"**.
     * Enter your 6-digit mobile 2FA TOTP code to confirm the database rollback.
 
-##### 6.5 Browsing the Master Vault &amp; Exporting Ingestion Reports
-*   **Master Vault Browsing:** Open **🏛️ File Vault Explorer**. Use the directory tree on the left to navigate folders. Select any file to inspect its canonical vault path, file size, media classification, and verified SHA-256 hash.
-*   **Session Audit Export:** After completing an Ingestion &amp; Sync sweep, click the **📊 Export Excel Report** button on the completion ribbon. digiArchive generates a multi-sheet `.xlsx` workbook inside `
+###### 6.5 Mastering the File Vault Explorer Subsystem (v5.1.0)
+
+Navigate to **🏛️ File Vault Explorer (Index 5)** on the left navigation rail.
+
+###### 6.5.1 Sub-Tab 1: Vault Folder Governance &amp; Preservation Status
+1. Select a folder node in the directory tree on the left pane.
+2. Inspect the **Governance Status Card**:
+   * **🔴 RED (`RAW / UNPROMOTED`):** Folder contains master files that require definitive organization.
+   * **🟡 YELLOW (`CANONICAL with Unbound Files`):** Folder is canonical, but contains files with unset canonical paths.
+   * **🟢 GREEN (`100% Compliant`):** All contained files have `canonical_path = master_path`.
+3. Execute required operations using the three action cards:
+   * **⭐ Promote to Definitive (CANONICAL):** Marks the directory as permanent archive storage and automatically updates `canonical_path = master_path` for all contained files.
+   * **↩️ Reset to Standard Folder (MASTER):** Demotes folder status back to standard unpromoted storage.
+   * **➕ Add New Definitive Subfolder:** Creates a new child folder on physical disk and registers the folder in the catalog database.
+   * **✏️ Rename Selected Folder:** Physically renames the folder on disk. The engine cascades path changes transactionally across all child files and subfolders in SQLite and appends an audit event to `file_decision_history`.
+   * **⚡ Bind Contained Files to Canonical:** Resolves 🟡 Yellow health flags by updating `files.canonical_path = master_path` for all files in that folder.
+   * **👉 View Pending Files in Browser:** Switches to Sub-Tab 2 and activates the `🔴 Pending Canonical` filter for the selected folder.
+   * **📂 Browse All Files in This Folder:** Switches to Sub-Tab 2 and displays all files in the selected folder.
+
+###### 6.5.2 Sub-Tab 2: File Browser, Filtering &amp; Bulk Movement
+1. Select a folder in the folder tree to populate the 6-column table:
+   `[ ☑ Selection | Filename | Ext | Size | Type | Status ]`
+2. Apply live filters using the top filter ribbon:
+   * **Search Box:** Instant substring search across filenames.
+   * **Extension Dropdown:** Shows only file extensions present in the active directory.
+   * **Category Dropdown:** Dynamic filtering using the SQLite `extension_registry` table (e.g., *Photo*, *Video*, *Music*, *Doc*, *Archives*, *Other*). Selecting a category updates the extension dropdown dynamically.
+   * **Status Dropdown:** Filter by preservation state (`All Statuses`, `🔴 Pending Canonical`, or `🟢 Canonical Verified`).
+   * **✕ Reset:** Clears all active filters and restores visibility for all rows.
+3. Inspect and edit individual files using the right panel:
+   * Inspect visual thumbnails for supported images (`JPG`, `PNG`, `WEBP`, `BMP`).
+   * Inspect metadata, capture dates, and SHA-256 fixity hashes.
+   * Click **📋 Copy SHA-256** to copy the full hash to the system clipboard.
+   * Rename a single file using the **File Name** box and click **✏️ Rename File**.
+   * Click **🧭 View Full Lineage** to jump directly to Sub-Tab 4 for that file.
+4. Execute protected bulk movements:
+   * Select files using table checkboxes (or click **Select All** / **Deselect All**). Hidden or filtered rows are protected automatically.
+   * Select a target folder using **📁 Pick Target** or type a path relative to the vault root.
+   * Click **🚚 Move Checked Files**.
+   * If the destination folder is `CANONICAL`, the engine automatically updates `files.canonical_path = new_path`.
+
+###### 6.5.3 Sub-Tab 3: Decision &amp; Move History (Audit Ledger &amp; Rollback)
+1. Switch to **📜 Decision &amp; Move History** to view all recorded move, rename, and governance actions.
+2. Filter historical records using the filter ribbon:
+   * Filter by **Date** (`YYYY-MM-DD`).
+   * Filter by **Source Path** or **Target Path** substrings.
+   * Filter by **Extension** (`JPG`, `MP4`, `PDF`, etc.).
+   * Filter by **Operation Source** (*Vault Explorer Moves*, *Single File Renames*, *Reversals &amp; Rollbacks*, *Canonical Decisions*).
+3. Execute 1-click move rollback:
+   * Select any row with valid source and destination paths.
+   * Click **↩️ Reverse Selected**.
+   * The application verifies that the file exists on disk, moves the file back to its previous location, updates the catalog database, and logs a reversal event.
+4. Export audit reports:
+   * Click **📥 Download Report** to export currently filtered records.
+   * Save the report as an Excel workbook (`.xlsx`) or standard CSV document. Output files default to `~/digiArchive_Vault/.archive/sync_reports/`.
+
+###### 6.5.4 Sub-Tab 4: Single-File Multi-Device Lineage Tracing
+1. Switch to **🧭 File Lineage**.
+2. Supply a 64-character SHA-256 hash using one of these methods:
+   * Click **🧭 View Full Lineage** on any file in Sub-Tab 2.
+   * Paste a SHA-256 string into the input box and click **🔍 Trace Lineage**.
+   * Click **📋 Paste &amp; Trace** to read the clipboard and trace automatically.
+   * Double-click any SHA-256 hash in the lineage table.
+3. Read the chronological lifecycle timeline across six stages:
+   * 🔵 **DISCOVERY:** Device hardware scan occurrence recorded in `asset_inventory`.
+   * 🟣 **PROVENANCE:** Device occurrence linked to logical file ID in `file_sources`.
+   * 🟡 **INGESTION:** Physical file transfer into vault verified via SHA-256 in `copy_manifest`.
+   * 🟢 **VAULT_ACTIVE:** Current active status and canonical path in `files`.
+   * 🔷 **DECISION:** Folder moves and file renames logged in `file_decision_history`.
+   * 🔴 **QUARANTINE:** File cleanup and quarantine actions logged in `deletion_events`.
+4. Click **👉 Locate in File Browser** to navigate back to Sub-Tab 2 with the parent folder selected.
+5. Click **📥 Export Lineage** to export the audit timeline to Excel or CSV.
+
 
 ---
 
@@ -222,4 +295,4 @@ Ensure that custom maintenance scripts execute multi-statement SQL via `conn.exe
 
 ---
 
-*digiArchive v5.0.5 — Preserving Digital Heritage with Cryptographic Fixity*
+*digiArchive v5.1.0 — Preserving Digital Heritage with Cryptographic Fixity*

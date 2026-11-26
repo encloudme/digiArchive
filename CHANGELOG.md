@@ -1,9 +1,35 @@
 ### Changelog 
 All notable changes to the digiArchive project are documented in this file.
 
+#### \[5.1.0] - 2026-11-26
+##### Added
+* **FR-32 Interactive Canonical Organization Engine:** Completed milestone v5.1.0 replacing rigid automated date-based path generators with user-directed vault governance.
+* **Three-State Governance Health Badges:** Real-time visual compliance tracking in Sub-Tab 1 displaying 🔴 RED (unpromoted), 🟡 YELLOW (unbound files), and 🟢 GREEN (100% canonical compliant).
+* **Definitive Canonical Contract Binding:** Added `bind_contained_files_to_canonical()` and automatic `canonical_path = master_path` binding when moving files into canonical folders.
+* **Subfolder Creation & Cascade Directory Renaming:** Added folder creation and renaming on disk with transactional SQLite catalog path cascade across child files and folders.
+* **Sub-Tab 3 Decision & Move History Ledger:** Complete audit trail tracking operations from `file_decision_history` with multi-criteria filtering (Date, Source Path, Target Path, Extension, Source).
+* **1-Click Transactional Move Rollback:** Implemented `reverse_selected_decision()` in Sub-Tab 3 restoring original physical file paths and updating database records atomically.
+* **Sub-Tab 4 File Lineage Subsystem:** Unified 6-table Common Table Expression (CTE) query tracing SHA-256 fixity across device discovery, provenance linkage, ingestion, master state, decisions, and bin quarantine.
+* **Lineage & History Audit Report Export:** Multi-sheet formatted Excel (`.xlsx`) via openpyxl and streaming CSV fallback export saved to `.archive/sync_reports/`.
+* **Dynamic Filter Ribbon & Extension Column:** 6th column 'Ext' with badge display in `tbl_files`, synchronized with SQLite `extension_registry` categories and canonical status dropdown.
+* **Reorganized Governance Operations Cards:** Structured Sub-Tab 1 actions into three logical cards (*Archive Classification & Policy*, *Directory Structure & Hierarchy*, *File Compliance & Navigation*) wrapped in scrollable container.
+
+##### Changed
+* **Centralized Application Styling (`app_styles.py`):** Removed local inline style overrides from `vault_explorer_ui.py`. All cards, titles, and frames inherit consistent styling across all 6 desktop themes.
+* **Settings Tab Navigation Refresh:** Wired `switch_page(6)` to reload GFS snapshot table and database backup ribbon when navigating to Settings.
+* **Startup Catch-Up Signal Wire:** Updated `initialize_startup_tasks(window)` to signal active UI instances immediately after executing missed scheduled backups.
+* **Auto-Clear Move Target Input:** Automatically resets destination input field after bulk moves to prevent accidental duplicate operations.
+
+##### Fixed
+* **Qt Event Loop Signal Storm on Folder Rename:** Wrapped `tree.clear()` and tree rebuilding in `blockSignals(True/False)` to eliminate main thread UI lockups.
+* **Fatal `TypeError` in Restore Points Navigation:** Fixed 3-argument `hasattr()` invocation on line 402 of `digiArchive.py`.
+* **Light Theme Card Backgrounds:** Fixed hardcoded dark backgrounds in Sub-Tab 1 action cards, Sub-Tab 2 inspector, and Sub-Tab 3 filter ribbons in Zinc Alabaster theme.
+* **Category Filter Fallback Synchronization:** Aligned `FALLBACK_CAT_MAP` across `on_filter_cat_changed` and `apply_file_filters` to prevent hiding valid photo and video extensions.
+
+
 #### \[5.0.5] - 2026-11-22
 ##### Added
-* **Operational Reporting Exports (Milestone v5.0.5)**: Added multi-tab Excel (`.xlsx`) and CSV session exports to the Ingest & Sync viewport (`src/reporting.py`, `src/sync_ui.py`) with automatic routing to `.archive/sync_reports`.
+* **Operational Reporting Exports (Milestone v5.1.0)**: Added multi-tab Excel (`.xlsx`) and CSV session exports to the Ingest & Sync viewport (`src/reporting.py`, `src/sync_ui.py`) with automatic routing to `.archive/sync_reports`.
 * **File Vault Explorer (FR-32)**: Added dedicated File Vault Explorer tab (`src/vault_explorer_ui.py`) with `QFileSystemModel` to inspect physical directory hierarchies and file attributes in the `MASTER` repository.
 * **Collapsible Navigation Rail**: Implemented persistent left-side navigation rail supporting smooth collapse (expanded 240px ↔ compact 68px).
 
